@@ -1,0 +1,25 @@
+  version: '3.3'
+  services:
+    arango:
+      image: arangodb/arangodb
+      ports:
+        - 8529:8529
+      environment:
+        ARANGO_ROOT_PASSWORD: somepassword
+    redis:
+      image: 'bitnami/redis:latest'
+      ports:
+        - '6379:6379'
+      environment:
+        - ALLOW_EMPTY_PASSWORD=yes
+
+    blog:
+      image: shaked/blog
+      ports:
+        - 8080:8080
+      links:
+        - arango
+        - redis
+      depends_on:
+        - arango
+        - redis
